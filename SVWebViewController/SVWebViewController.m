@@ -38,7 +38,7 @@
 @implementation SVWebViewController
 
 @synthesize availableActions;
-
+@synthesize disableCopyTintColor;
 @synthesize URL, mainWebView;
 @synthesize backBarButtonItem, forwardBarButtonItem, refreshBarButtonItem, stopBarButtonItem, actionBarButtonItem, pageActionSheet;
 
@@ -278,8 +278,10 @@
                      nil];
         }
         
-				self.navigationController.toolbar.barStyle = self.navigationController.navigationBar.barStyle;
-				self.navigationController.toolbar.tintColor = self.navigationController.navigationBar.tintColor;
+        self.navigationController.toolbar.barStyle = self.navigationController.navigationBar.barStyle;
+        if (!self.disableCopyTintColor) {
+            self.navigationController.toolbar.tintColor = self.navigationController.navigationBar.tintColor;
+        }
         self.toolbarItems = items;
     }
 }
