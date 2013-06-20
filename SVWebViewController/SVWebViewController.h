@@ -15,7 +15,10 @@
 - (id)initWithAddress:(NSString*)urlString;
 - (id)initWithURL:(NSURL*)URL;
 
+@property (nonatomic, strong) UIWebView *mainWebView;
 @property (nonatomic, readwrite) SVWebViewControllerAvailableActions availableActions;
 @property (nonatomic, assign) BOOL disableCopyTintColor;
+@property (nonatomic, assign) BOOL shouldUsePageTitle; // default YES. Title is taken from the HTML title.
+@property (nonatomic, assign) BOOL shouldEnableScrolling; // default YES.
 
 @end

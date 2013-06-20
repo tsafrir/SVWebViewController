@@ -17,7 +17,6 @@
 @property (nonatomic, strong, readonly) UIBarButtonItem *actionBarButtonItem;
 @property (nonatomic, strong, readonly) UIActionSheet *pageActionSheet;
 
-@property (nonatomic, strong) UIWebView *mainWebView;
 @property (nonatomic, strong) NSURL *URL;
 
 - (id)initWithAddress:(NSString*)urlString;
@@ -129,6 +128,8 @@
     if(self = [super init]) {
         self.URL = pageURL;
         self.availableActions = SVWebViewControllerAvailableActionsOpenInSafari | SVWebViewControllerAvailableActionsOpenInChrome | SVWebViewControllerAvailableActionsMailLink;
+        self.shouldUsePageTitle = YES;
+        self.shouldEnableScrolling = YES;
     }
     
     return self;
@@ -144,8 +145,13 @@
     mainWebView = [[UIWebView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     mainWebView.delegate = self;
     mainWebView.scalesPageToFit = YES;
+    mainWebView.scrollView.scrollEnabled = self.shouldEnableScrolling;
+    mainWebView.scrollView.bounces = self.shouldEnableScrolling;
+    mainWebView.scalesPageToFit = self.shouldEnableScrolling;
+    
     [self loadURL:self.URL];
     self.view = mainWebView;
+    
 }
 
 - (void)viewDidLoad {
@@ -298,7 +304,9 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
-    self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    if (self.shouldUsePageTitle) {
+        self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    }
     [self updateToolbarItems];
 }
 
